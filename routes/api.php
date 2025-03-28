@@ -16,3 +16,11 @@ Route::get('/productos', function () {
     ]);
 
 });
+
+Route::get('/usuarios', function () {
+    return response()->json([
+        'message' => 'todos los usuarios',
+        'status' => 'success'
+    ]);
+
+});
