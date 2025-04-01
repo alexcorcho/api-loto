@@ -1,6 +1,9 @@
 <?php
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WordpressApiController;
+use App\Http\Controllers\WordPressAuthController;
+
 
 Route::get('/test', function () {
     return response()->json([
@@ -32,3 +35,12 @@ Route::get('/youtube', function () {
     ]);
 
 });
+
+
+Route::get('/wp/users', [WordPressAuthController::class, 'listUsers']);
+Route::post('/wp/users', [WordPressAuthController::class, 'createUser']);
+Route::put('/wp/users/{user_id}', [WordPressAuthController::class, 'updateUser']);
+Route::delete('/wp/users/{user_id}', [WordPressAuthController::class, 'deleteUser']);
+Route::post('/wp/token', [WordPressAuthController::class, 'getToken']);
+
+
