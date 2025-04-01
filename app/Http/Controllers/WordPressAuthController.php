@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 class WordPressAuthController extends Controller
 {
-    public function getToken(Request $request)
-    {
+public function getToken(Request $request)
+{
         $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
@@ -199,6 +199,37 @@ public function listUsers(Request $request)
         return response()->json([
             'users' => $response->json()
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Error interno en el servidor',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
+
+public function getUserById(Request $request, $id)
+{
+    $token = $request->header('Authorization');
+
+    if (!$token) {
+        return response()->json(['error' => 'Token no proporcionado'], 401);
+    }
+
+    try {
+        // Hacer la petición a WordPress
+        $response = Http::withHeaders([
+            'Authorization' => $token,
+            'Content-Type' => 'application/json',
+        ])->get(config('services.wordpress.api_url') . "/wp/v2/users/{$id}");
+
+        if (!$response->successful()) {
+            return response()->json([
+                'error' => 'No se pudo obtener el usuario de WordPress',
+                'details' => $response->json()
+            ], $response->status());
+        }
+
+        return response()->json($response->json());
     } catch (\Exception $e) {
         return response()->json([
             'error' => 'Error interno en el servidor',

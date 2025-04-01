@@ -42,5 +42,5 @@ Route::post('/wp/users', [WordPressAuthController::class, 'createUser']);
 Route::put('/wp/users/{user_id}', [WordPressAuthController::class, 'updateUser']);
 Route::delete('/wp/users/{user_id}', [WordPressAuthController::class, 'deleteUser']);
 Route::post('/wp/token', [WordPressAuthController::class, 'getToken']);
-
+Route::get('/wp/users/{id}', [WordPressAuthController::class, 'getUserById']);
 
