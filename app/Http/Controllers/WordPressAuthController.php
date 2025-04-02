@@ -238,5 +238,40 @@ public function getUserById(Request $request, $id)
     }
 }
 
+public function login(Request $request)
+{
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+    ]);
+
+    try {
+        // Hacemos la petición a la API de WordPress para obtener el token
+        $response = Http::post(config('services.wordpress.api_url') . '/jwt-auth/v1/token', [
+            'username' => $request->input('username'),
+            'password' => $request->input('password'),
+        ]);
+
+        // Verificamos si la respuesta es exitosa
+        if (!$response->successful()) {
+            return response()->json([
+                'error' => 'No se pudo autenticar con WordPress',
+                'details' => $response->json(),
+            ], $response->status());
+        }
+
+        // Devolvemos el token de WordPress al usuario
+        return response()->json([
+            'message' => 'Inicio de sesión exitoso',
+            'token' => $response->json(),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Error interno en el servidor',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+}
+
     
 }
