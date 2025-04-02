@@ -273,5 +273,13 @@ public function login(Request $request)
     }
 }
 
+public function logout(Request $request)
+{
+    // Eliminar el token del cliente
+    return response()->json([
+        'message' => 'Sesión cerrada correctamente. Elimina el token del lado del cliente.'
+    ]);
+}
+
     
 }

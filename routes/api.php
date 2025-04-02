@@ -44,5 +44,7 @@ Route::delete('/wp/users/{user_id}', [WordPressAuthController::class, 'deleteUse
 Route::post('/wp/token', [WordPressAuthController::class, 'getToken']);
 Route::get('/wp/users/{id}', [WordPressAuthController::class, 'getUserById']);
 Route::post('/wp/login', [WordPressAuthController::class, 'login']);
+Route::post('/wp/logout', [WordPressAuthController::class, 'logout']);
+
 
 
